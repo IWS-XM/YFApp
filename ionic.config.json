@@ -1,0 +1,11 @@
+{
+  "name": "myApp",
+  "app_id": "",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://117.29.177.122:8888/api"
+    }
+  ],
+  "type": "ionic-angular"
+}

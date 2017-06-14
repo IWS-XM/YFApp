@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>iWS验房</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content padding >
+
+<!--<ion-card (tap)="mousedown($event)" (swipe)="mouseup($event)" (pan)="mousemove($event)">-->
+  <ion-label>touchstart {{touchstart}} </ion-label>
+  <ion-label>touchmove {{touchmove}} </ion-label>
+  <ion-label>touchend {{touchend}} </ion-label>
+  <div id="paint">
+     <canvas id="myCanvas" style="border:1px solid #c3c3c3"></canvas>
+  		<!--<canvas id="myCanvas" (touchstart) ="mousedown($event)" (touchend) ="mouseup($event)" (touchmove) ="mousemove($event)"></canvas>		-->
+	</div>
+
+</ion-content>
+
+
