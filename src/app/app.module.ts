@@ -21,6 +21,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
+import {SQLite} from '@ionic-native/sqlite';
 import { IonicStorageModule } from '@ionic/storage';
 import {NativeService} from '../providers/nativeservice';
 // import {CSDKImageEditor} from '@ionic-native/phonegap-plugin-csdk-image-editor';
@@ -64,6 +65,7 @@ import {NativeService} from '../providers/nativeservice';
     SplashScreen,
   	Camera,
     LocalStorage,
+    SQLite,
     NativeService,
     HttpService,
     // CSDKImageEditor,
