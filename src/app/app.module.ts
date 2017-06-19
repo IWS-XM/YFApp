@@ -16,6 +16,7 @@ import { LocalStorage } from '../providers/local-storage';
 import { ImageeditorPage } from '../pages/imageeditor/imageeditor';
 import { CavimageeditorPage } from '../pages/imageeditor/cavimageeditor';
 import { HttpService } from '../providers/HttpService';
+import { initBaseDB } from '../providers/initBaseDB';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -64,10 +65,11 @@ import {NativeService} from '../providers/nativeservice';
     StatusBar,
     SplashScreen,
   	Camera,
-    LocalStorage,
+    LocalStorage,    
     SQLite,
     NativeService,
     HttpService,
+    initBaseDB,
     // CSDKImageEditor,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

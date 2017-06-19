@@ -5,6 +5,7 @@ import { FloorPage } from '../floor/Floor';
 import { LocalStorage } from '../../providers/local-storage';
 import { CavimageeditorPage } from '../imageeditor/cavimageeditor';
 import { ImageeditorPage } from '../imageeditor/imageeditor';
+import { initBaseDB } from '../../providers/initBaseDB';
 
 @Component({
   selector: 'page-home',
@@ -12,7 +13,7 @@ import { ImageeditorPage } from '../imageeditor/imageeditor';
 })
 export class HomePage {
   buildings:Array<any>;
-  constructor(public navCtrl: NavController,public alertCtrl: AlertController,public localStorage: LocalStorage) {
+  constructor(public navCtrl: NavController,public alertCtrl: AlertController,public localStorage: LocalStorage, public initBaseDB: initBaseDB) {
 
     this.localStorage.getItem('buildings').then(
 			val => this.buildings = val
@@ -25,7 +26,7 @@ export class HomePage {
   }
   
   resetclick(){
-
+    this.initBaseDB.initdb("name1.db",true);
     this.localStorage.setItem("initialed",null).then(v=>{
        this.localStorage.init();
     });
