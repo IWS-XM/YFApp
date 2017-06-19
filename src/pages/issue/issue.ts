@@ -4,6 +4,8 @@ import { AlertController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { LocalStorage } from '../../providers/local-storage';
 import { NativeService } from "../../providers/nativeservice";
+import { ImgeditorPage } from '../../pages/imageeditor/imgeditor';
+import { ShowimgPage } from '../../pages/imageeditor/showimg';
 
 @Component({
 	selector: 'page-issue',
@@ -32,15 +34,9 @@ export class IssuePage {
 	issue_x: number;
 	issue_y: number;
 	roodid: string;
-	savetax: boolean;
 	url: string;
 	bigImage: boolean;	
-	mousestouch:Array<any>;
-	onPaint: any;
-	canvas: any;
-	context: any;
 	buildingname: string;
-	imageC : any;
 	constructor(public localStorage: LocalStorage, private camera: Camera, public navCtrl: NavController, public alertCtrl: AlertController,
 		public params: NavParams, private nativeService: NativeService) {
 		this.sections = ["厨房", "餐厅", "客厅", "阳台", "主卧", "次卧", "公用卫生间", "主卧卫生间"];
@@ -53,8 +49,6 @@ export class IssuePage {
 		this.vendors = ["八达建设", "柏事特", "甲方", "盼盼安全门", "通力电梯", "维度化工"];
 		this.responsibilityunit = ["八达建设", "柏事特", "甲方", "盼盼安全门", "通力电梯", "维度化工"];
 		this.images = [];
-		this.mousestouch = [];
-		this.imageC = new Image();
 		this.roodid = this.params.get('roomid');
 		this.section = this.params.get('section');
 		this.issue_x = this.params.get('x');
@@ -93,7 +87,6 @@ export class IssuePage {
 		this.vend = '';
 		this.resunit = '';
 		this.issueid = '';
-		this.savetax = true;
 		this.bigImage = false;
 	}
 
@@ -108,166 +101,18 @@ export class IssuePage {
 
 	cameraclick() {
 		const options: CameraOptions = {
-			quality: 100,
+			quality: 85,
 			destinationType: this.camera.DestinationType.DATA_URL,
 			encodingType: this.camera.EncodingType.JPEG,
 			mediaType: this.camera.MediaType.PICTURE
 		}
+		
 		this.camera.getPicture(options).then((imageData) => {
-			// imageData is either a base64 encoded string or a file URI
-			// If it's base64:
-			var src = 'data:image/jpeg;base64,' + imageData;
-			this.savetax = true;
-			var image = new Image();
-			image.onload = val => {
-				document.getElementById("canvasdisplay").style.display = "";
-				this.canvas = document.getElementById("myCanvas");
-				//this.canvas.width = 1;
-				//this.canvas.height = 1;
-				this.context = this.canvas.getContext("2d");
-				this.context.lineWidth = 3;
-				this.context.lineJoin = 'round';
-				this.context.lineCap = 'round';
-				this.context.strokeStyle = '#ff0000';
-				var mouse: any;
-	            var mouses: Array<any>;
-				mouse = { x: 0, y: 0 };
-				mouses = [];
-				this.mousestouch = [];
-				//this.painting = document.getElementById('paint');
-				// this.onPaint = val => {
-				// 	this.context.lineTo(this.mouse.x, this.mouse.y);
-				// 	this.context.stroke();
-				// }
-
-				this.canvas.addEventListener('touchmove', (event) => {					
-					mouse.x = event.changedTouches[0].pageX - this.canvas.offsetLeft;
-					mouse.y = event.changedTouches[0].pageY - this.canvas.offsetTop;
-					mouses.push({x:mouse.x,y:mouse.y});								
-				}, false);
-
-				this.canvas.addEventListener('touchstart', (event) => {
-					this.context.strokeStyle = '#ff0000';
-					//this.context.beginPath();					
-					mouse ={ x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY };  
-					this.context.moveTo(mouse.x, mouse.y);
-					//console.log(mouses);
-                    mouses = [{x:mouse.x,y:mouse.y}];										
-					this.canvas.addEventListener('touchmove', (event) => {							
-						this.context.lineTo(mouse.x, mouse.y);
-						this.context.stroke();
-					}, false);
-				}, false);
-
-				this.canvas.addEventListener('touchend', (event) => {
-					this.canvas.removeEventListener('touchmove', (event) => {						
-						this.context.lineTo(mouse.x, mouse.y);
-						this.context.stroke();																	
-					}, false);
-                    this.mousestouch.push(mouses);
-					mouses = [];
-				}, false);
-				this.canvas.width = 330;//window.innerWidth;// image.width;
-				this.canvas.height = 430;//window.innerHeight;//image.height-20;
-				this.context.drawImage(image, 0, 0, this.canvas.width, this.canvas.height);
-				this.context.save();		
-			}
-			image.crossOrigin = "*";
-			image.src = src;
-			this.imageC.src = src;
+			this.navCtrl.push(ImgeditorPage,{img:this.images,imgdata:imageData});
 		}, (err) => {
 			// Handle error
 		});
 
-	}
-
-    imageeditclick() {
-		this.context.font = 15 + "px Arial";
-		this.context.textBaseline = 'middle';//更改字号后，必须重置对齐方式，否则居中麻烦。设置文本的垂直对齐方式
-		this.context.textAlign = 'right-side';
-		//var tw = cxt.measureText(text).width;
-		var ftop = this.canvas.height - 15;
-		var fleft = this.canvas.width / 5;
-		var now = new Date();
-		var text = '黄宏拍摄于 ' + now.toLocaleDateString() + "  " + now.toLocaleTimeString();
-		this.context.fillStyle = "#ffffff";
-		this.context.fillText(text, fleft, ftop);//文本元素在画布居中方式
-		this.context.save();
-		let newsrc = this.canvas.toDataURL('image/jpeg', 0.78);
-		this.images.push(newsrc);//'data:image/jpeg;base64,' + imageData);										
-		this.savetax = false;
-		this.context.clearRect(0, 0, this.context.width, this.context.height);
-		document.getElementById("canvasdisplay").style.display = "none";	
-	}
-
-    redrawclick(){
-        this.context.clearRect(0, 0, this.context.width, this.context.height);
-		this.context.drawImage(this.imageC, 0, 0, this.canvas.width, this.canvas.height);		
-		this.mousestouch.pop();	
-		var mouse: any;
-	    var mouses: Array<any>;
-		mouses = [];
-		for (var i = 0; i < this.mousestouch.length; i++)
-		{
-			mouses = this.mousestouch[i];
-			mouse = mouses[0];
-			this.context.strokeStyle = '#ff0000';		    
-			this.context.moveTo(mouse.x, mouse.y);
-			this.context.beginPath();
-			for (var j =1; j < mouses.length; j++)
-			{
-				mouse = mouses[j];
-				this.context.lineTo(mouse.x, mouse.y);
-			    this.context.stroke();
-			}			
-		}
-		this.context.save();
-	}
-
-	getPicture(type) {//1拍照,0从图库选择
-		let options = {
-			targetWidth: window.outerWidth,
-			targetHeight: window.outerHeight
-		};
-		if (type == 1) {
-			this.nativeService.getPictureByCamera(options).then(imageBase64 => {
-				var src = 'data:image/png;base64,' + imageBase64;
-				var canvas: any;
-				var now = new Date();
-				var text = '黄宏拍摄于 ' + now.toLocaleDateString() + "  " + now.toLocaleTimeString();
-				this.savetax = true;
-				canvas = document.getElementById("myCanvas");
-				var context: any;
-				context = canvas.getContext("2d");
-				//context.clearRect(0, 0, context.width, context.height);				
-				var image = new Image();
-				image.onload = val => {
-					canvas.width = image.width;
-					canvas.height = image.height;
-					context.drawImage(image, 0, 0, canvas.width, canvas.height);
-					context.save();
-					context.font = 15 + "px Arial";
-					context.textBaseline = 'middle';//更改字号后，必须重置对齐方式，否则居中麻烦。设置文本的垂直对齐方式
-					context.textAlign = 'right-side';
-					//var tw = cxt.measureText(text).width;
-					var ftop = canvas.height - 15;
-					var fleft = canvas.width / 5;
-					context.fillStyle = "#ffffff";
-					context.fillText(text, fleft, ftop);//文本元素在画布居中方式
-					context.save();
-					//console.log(canvas.toDataURL());
-					this.images.push(canvas.toDataURL());//'data:image/jpeg;base64,' + imageBase64);	
-					//context.clearRect(0, 0, context.width, context.height);				
-					this.savetax = false;
-					context.clearRect(0, 0, context.width, context.height);
-				}
-				image.crossOrigin = "*";
-				image.src = src;
-				
-			}, (err) => {
-
-			});
-		}
 	}
 
 	//   private getPictureSuccess(imageBase64) {
@@ -341,9 +186,10 @@ export class IssuePage {
 		});		
 	}
 	//点击图片放大
-    shouBigImage(imageName) {  //传递一个参数（图片的URl）
-		this.url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
-		this.bigImage = true;                   //显示大图		
+    showBigImage(imageName) {  //传递一个参数（图片的URl）
+		this.navCtrl.push(ShowimgPage,{imgdata:imageName});
+		//this.url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
+		//this.bigImage = true;                   //显示大图		
     };
 
 	hideBigImage() {

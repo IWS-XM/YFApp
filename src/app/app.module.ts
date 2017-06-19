@@ -17,6 +17,8 @@ import { ImageeditorPage } from '../pages/imageeditor/imageeditor';
 import { CavimageeditorPage } from '../pages/imageeditor/cavimageeditor';
 import { HttpService } from '../providers/HttpService';
 import { initBaseDB } from '../providers/initBaseDB';
+import { ImgeditorPage } from '../pages/imageeditor/imgeditor';
+import { ShowimgPage } from '../pages/imageeditor/showimg';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -38,6 +40,8 @@ import {NativeService} from '../providers/nativeservice';
 	IssuePage,
   IssueviewPage,
   ImageeditorPage,
+  ImgeditorPage,
+  ShowimgPage,
   CavimageeditorPage,
     TabsPage
   ],
@@ -58,6 +62,8 @@ import {NativeService} from '../providers/nativeservice';
 	IssuePage,
   IssueviewPage,
   ImageeditorPage,
+  ImgeditorPage,
+  ShowimgPage,
   CavimageeditorPage,
     TabsPage
   ],

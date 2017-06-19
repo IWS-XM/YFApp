@@ -6,6 +6,7 @@ import { LocalStorage } from '../../providers/local-storage';
 //import { HTTP } from '@ionic-native/http';
 import {HttpService} from '../../providers/HttpService';
 import {APP_SERVE_URL} from '../../providers/Constants';
+import { ShowimgPage } from '../../pages/imageeditor/showimg';
 
 @Component({
 	selector: 'page-issueview',
@@ -31,8 +32,6 @@ export class IssueviewPage {
 	issueid: string;
 	roodid: string;
 	status: number;
-	url: string;
-	bigImage: boolean;
 	savetax: boolean;	
 	mousestouch:Array<any>;
 	onPaint: any;
@@ -114,8 +113,7 @@ export class IssueviewPage {
 				this.status = issuelist.status;
 			})
 		//var now = new Date();
-		//this.registertime=now.toLocaleDateString()+"  "+now.toLocaleTimeString();
-		this.bigImage = false;
+		//this.registertime=now.toLocaleDateString()+"  "+now.toLocaleTimeString();		
 		this.savetax = true;
 	}
 
@@ -223,31 +221,7 @@ export class IssueviewPage {
 		this.savetax = false;
 		this.context.clearRect(0, 0, this.context.width, this.context.height);
 		document.getElementById("canvasdisplay").style.display = "none";	
-	}
-
-    redrawclick(){
-        this.context.clearRect(0, 0, this.context.width, this.context.height);
-		this.context.drawImage(this.imageC, 0, 0, this.canvas.width, this.canvas.height);		
-		this.mousestouch.pop();	
-		var mouse: any;
-	    var mouses: Array<any>;
-		mouses = [];
-		for (var i = 0; i < this.mousestouch.length; i++)
-		{
-			mouses = this.mousestouch[i];
-			mouse = mouses[0];
-			this.context.strokeStyle = '#ff0000';		    
-			this.context.moveTo(mouse.x, mouse.y);
-			this.context.beginPath();
-			for (var j =1; j < mouses.length; j++)
-			{
-				mouse = mouses[j];
-				this.context.lineTo(mouse.x, mouse.y);
-			    this.context.stroke();
-			}			
-		}
-		this.context.save();
-	}
+	}    
 
 	ionViewWillEnter() {
 
@@ -334,74 +308,9 @@ export class IssueviewPage {
 			})
 	}
 
-	hideBigImage() {
-		this.bigImage = false;
-	};
-
 	//点击图片放大
 	showBigImage(imageName) {  //传递一个参数（图片的URl）
-		 this.url = imageName;                   //$scope定义一个变量Url，这里会在大图出现后再次点击隐藏大图使用
-		 this.bigImage = true;                   //显示大图
-        
-		// var src = imageName;
-		// 	this.savetax = true;
-		// 	var image = new Image();
-		// 	image.onload = val => {
-		// 		document.getElementById("canvasdisplay").style.display = "";
-		// 		this.canvas = document.getElementById("myCanvas");
-		// 		//this.canvas.width = 1;
-		// 		//this.canvas.height = 1;
-		// 		this.context = this.canvas.getContext("2d");
-		// 		this.context.lineWidth = 3;
-		// 		this.context.lineJoin = 'round';
-		// 		this.context.lineCap = 'round';
-		// 		this.context.strokeStyle = '#ff0000';
-		// 		var mouse: any;
-	    //         var mouses: Array<any>;
-		// 		mouse = { x: 0, y: 0 };
-		// 		mouses = [];
-		// 		this.mousestouch = [];
-		// 		//this.painting = document.getElementById('paint');
-		// 		// this.onPaint = val => {
-		// 		// 	this.context.lineTo(this.mouse.x, this.mouse.y);
-		// 		// 	this.context.stroke();
-		// 		// }
-
-		// 		this.canvas.addEventListener('touchmove', (event) => {					
-		// 			mouse.x = event.changedTouches[0].pageX - this.canvas.offsetLeft;
-		// 			mouse.y = event.changedTouches[0].pageY - this.canvas.offsetTop;
-		// 			mouses.push({x:mouse.x,y:mouse.y});								
-		// 		}, false);
-
-		// 		this.canvas.addEventListener('touchstart', (event) => {
-		// 			this.context.strokeStyle = '#ff0000';
-		// 			//this.context.beginPath();					
-		// 			mouse ={ x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY };  
-		// 			this.context.moveTo(mouse.x, mouse.y);
-		// 			//console.log(mouses);
-        //             mouses = [{x:mouse.x,y:mouse.y}];										
-		// 			this.canvas.addEventListener('touchmove', (event) => {							
-		// 				this.context.lineTo(mouse.x, mouse.y);
-		// 				this.context.stroke();
-		// 			}, false);
-		// 		}, false);
-
-		// 		this.canvas.addEventListener('touchend', (event) => {
-		// 			this.canvas.removeEventListener('touchmove', (event) => {						
-		// 				this.context.lineTo(mouse.x, mouse.y);
-		// 				this.context.stroke();																	
-		// 			}, false);
-        //             this.mousestouch.push(mouses);
-		// 			mouses = [];
-		// 		}, false);
-		// 		this.canvas.width = 330;// image.width;
-		// 		this.canvas.height = 430;//image.height-20;
-		// 		this.context.drawImage(image, 0, 0, this.canvas.width, this.canvas.height);
-		// 		this.context.save();		
-		// 	}
-		// 	image.crossOrigin = "*";
-		// 	image.src = src;	
-		// 	this.imageC.src = src;
+		this.navCtrl.push(ShowimgPage,{imgdata:imageName});	
 	};
 
 	deleteimage(imagesrc) {
@@ -418,16 +327,6 @@ export class IssueviewPage {
 			j++;
 		});
 	}
-
-	// deleteimage2(imagesrc){
-	// 	let i = 0;
-	// 	this.images.forEach(element => {
-	// 		if (element == imagesrc)
-	// 		    this.images.splice(i,1);
-	// 	    i++;
-	// 	});
-
-	// }
 
 	uploading(){		
 		this.httpService.post(APP_SERVE_URL + '/MyDemotables/add',{id:7100,picstr:this.newsrc,Remark:'imagetest'});
