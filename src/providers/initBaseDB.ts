@@ -3,22 +3,24 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Storage } from '@ionic/storage';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+import { SQLitePorter } from '@ionic-native/sqlite-porter';
 
 @Injectable()
 export class initBaseDB {
   db: SQLiteObject;
-  constructor(public http: Http, private sqlite: SQLite, public storage: Storage) {
+  constructor(public http: Http, private sqlite: SQLite, public storage: Storage, private sqlitePorter: SQLitePorter) {
      
   }
 
   initdb(dbname: string, createflag: boolean) {
+    
     this.sqlite.create({
       name: dbname,
       location: 'default'
     }).then((val: SQLiteObject) => {
       this.db = val;
       if (createflag)
-        this.initBaseTable("tt","data",'https://api.github.com/users/litehelpers/repos');
+        this.initBaseTable("vend","Id,NameAlias,Responsible,Phone",'http://117.29.177.122:9000/api/vend/');
     }).catch(e => console.log(e));
   }
 
@@ -27,27 +29,45 @@ export class initBaseDB {
     var JSON = window['JSON'];
     this.db.executeSql("DROP TABLE IF EXISTS "+tablename,[]);     
     this.db.executeSql("CREATE TABLE "+tablename+" ("+fields+")",[]);    
-    
+    var json = {};
     $.ajax({
       url: url,
+      type:'GET',
       dataType: 'json',
       success: (res)=> {
-              console.log('Got AJAX response: ' + JSON.stringify(res));
-              //alert('Got AJAX response');
-              this.db.transaction((tx)=>{
-                 $.each(res, (i, item)=>{
-                  console.log('item: ' + JSON.stringify(item));
-                  this.db.executeSql("INSERT INTO "+tablename+" values (?)", JSON.stringify(item)).then(val=>{
-                      this.db.executeSql("SELECT COUNT(*) FROM "+tablename, []).then(vres=>{
-                       console.log('Check SELECT result: ' + JSON.stringify(vres.rows.item(0)));
-                       alert('Transaction finished, check record count: ' + JSON.stringify(vres.rows.item(0)));
+              console.log('Got AJAX response: ' + JSON.stringify(res));              
+              json = {"data":{ "inserts":{ [tablename] :res}}};              
+              console.log(json);
+              this.sqlitePorter.importJsonToDb(this.db,json).then(val=>{
+                   this.db.executeSql("SELECT * FROM "+tablename+ " where NameAlias != '柏事特'", []).then(vres=>{
+                     for(var i = 0; i < vres.rows.length; i++)
+                     {
+                         console.log('Check SELECT result: ' + JSON.stringify(vres.rows.item(i).Id));
+                         console.log('Check SELECT result: ' + JSON.stringify(vres.rows.item(i).NameAlias));
+                         console.log('Check SELECT result: ' + JSON.stringify(vres.rows.item(i).Responsible));
+                         console.log('Check SELECT result: ' + JSON.stringify(vres.rows.item(i).Phone));
+                         alert('Transaction finished, check record count: ' + JSON.stringify(vres.rows.item(i)));
+                     }
                   })
-                  }).catch(e=>{
-                      console.log('Transaction error: ' + e.message);
-                      alert('Transaction error: ' + e.message);
-                  })                           
-                });
-              });
+              }).catch(e=>{
+                console.log('Transaction error: ' + e.message);
+                alert('Transaction error: ' + e.message);
+              })
+              //alert('Got AJAX response');
+              // this.db.transaction((tx)=>{
+              //    $.each(res, (i, item)=>{
+              //     console.log('item: ' + JSON.stringify(item));                  
+              //     this.db.executeSql("INSERT INTO "+tablename+" values (?)", JSON.stringify(item)).then(val=>{
+              //         this.db.executeSql("SELECT COUNT(*) FROM "+tablename, []).then(vres=>{
+              //          console.log('Check SELECT result: ' + JSON.stringify(vres.rows.item(0)));
+              //          alert('Transaction finished, check record count: ' + JSON.stringify(vres.rows.item(0)));
+              //     })
+              //     }).catch(e=>{
+              //         console.log('Transaction error: ' + e.message);
+              //         alert('Transaction error: ' + e.message);
+              //     })                           
+              //   });
+              // });
             },
        error: (e)=> {
                 console.log('ajax error: ' + JSON.stringify(e));

@@ -79,6 +79,7 @@ import {NativeService} from '../providers/nativeservice';
   	Camera,
     LocalStorage,    
     SQLite,
+    SQLitePorter,
     NativeService,
     HttpService,
     initBaseDB,

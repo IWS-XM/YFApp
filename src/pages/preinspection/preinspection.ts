@@ -23,11 +23,11 @@ export class PreinspectionPage {
       this.navCtrl.push(FloorPage, {"buildingid":item});
   }
   
-  resetclick(){
+  resetclick(){    
     this.initBaseDB.initdb("name1.db",true);
     this.localStorage.setItem("initialed",null).then(v=>{
        this.localStorage.init();
-    });
+     });
     
   }
 
