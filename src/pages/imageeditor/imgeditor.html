@@ -4,11 +4,10 @@
     </ion-navbar>
 </ion-header>-->
 <!--<ion-content>-->
-    <div id="canvasEditor" *ngIf="savetax" class="popover-backdrop" style="position: fixed;z-index: 0; width: 100%;height: 100%;display: none;background-color: black;">
+    <div id="canvasEditor" class="popover-backdrop" style="position: fixed;z-index: 0; width: 100%;height: 100%;background-color: black;">
         <canvas id="myCanvasEditor"></canvas>
         <div id="btndisplay" style="top:0px;height:50px;width:100%;background-color: black;">
-            <button ion-button navPop (click)="imageeditclick()">ok</button>
-            <button ion-button (click)="redrawclick()">Cancel</button>
+            <button ion-button style="left:0%" color="dark" (click)="redrawclick()">Cancel</button>   <button ion-button style="left:18%" color="danger" (click)="redclick()" icon-only><ion-icon name="edit"></ion-icon></button>      <button ion-button style="left:22%" (click)="blueclick()" icon-only><ion-icon name="edit"></ion-icon></button>     <button ion-button navPop style="left:40%" color="dark" (click)="imageeditclick()">ok</button>     
         </div>
     </div>
 <!--</ion-content>-->
