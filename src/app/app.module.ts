@@ -13,8 +13,10 @@ import { RoomPage } from '../pages/room/room';
 import { IssuePage } from '../pages/issue/issue';
 import { IssueviewPage } from '../pages/issueview/issueview';
 import { LocalStorage } from '../providers/local-storage';
-import { ImageeditorPage } from '../pages/imageeditor/imageeditor';
-import { CavimageeditorPage } from '../pages/imageeditor/cavimageeditor';
+import { FormalinspectionPage } from '../pages/formalinspection/formalinspection';
+import { OpeninspectionPage } from '../pages/openinspection/openinspection';
+import { PreinspectionPage } from '../pages/preinspection/preinspection';
+import { MaintenancePage } from '../pages/maintenance/maintenance';
 import { HttpService } from '../providers/HttpService';
 import { initBaseDB } from '../providers/initBaseDB';
 import { ImgeditorPage } from '../pages/imageeditor/imgeditor';
@@ -39,10 +41,12 @@ import {NativeService} from '../providers/nativeservice';
   RoomPage,
 	IssuePage,
   IssueviewPage,
-  ImageeditorPage,
   ImgeditorPage,
   ShowimgPage,
-  CavimageeditorPage,
+  FormalinspectionPage,
+  OpeninspectionPage,
+  PreinspectionPage,
+  MaintenancePage,
     TabsPage
   ],
   imports: [
@@ -61,10 +65,12 @@ import {NativeService} from '../providers/nativeservice';
   RoomPage,
 	IssuePage,
   IssueviewPage,
-  ImageeditorPage,
   ImgeditorPage,
   ShowimgPage,
-  CavimageeditorPage,
+  FormalinspectionPage,
+  OpeninspectionPage,
+  PreinspectionPage,
+  MaintenancePage,
     TabsPage
   ],
   providers: [

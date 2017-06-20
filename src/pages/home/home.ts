@@ -3,8 +3,6 @@ import { NavController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular'; 
 import { FloorPage } from '../floor/Floor';
 import { LocalStorage } from '../../providers/local-storage';
-import { CavimageeditorPage } from '../imageeditor/cavimageeditor';
-import { ImageeditorPage } from '../imageeditor/imageeditor';
 import { initBaseDB } from '../../providers/initBaseDB';
 
 @Component({
@@ -33,8 +31,5 @@ export class HomePage {
     
   }
 
-  imageclick(){
-      this.navCtrl.push(CavimageeditorPage);
-  }
 
 }
