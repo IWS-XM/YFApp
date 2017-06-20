@@ -4,15 +4,17 @@
 import {Injectable} from '@angular/core';
 import {ToastController, LoadingController, Platform, Loading, AlertController} from 'ionic-angular';
 //import {AppVersion} from '@ionic-native/app-version';
-import {Camera, CameraOptions} from '@ionic-native/camera';
+//import {Camera, CameraOptions} from '@ionic-native/camera';
 //import {Toast} from '@ionic-native/toast';
 //import {File} from '@ionic-native/file';
 //import {Transfer, TransferObject} from '@ionic-native/transfer';
 //import {InAppBrowser} from '@ionic-native/in-app-browser';
 //import {ImagePicker} from '@ionic-native/image-picker';
-//import {Network} from '@ionic-native/network';
+import {Network} from '@ionic-native/network';
+import { Dialogs } from '@ionic-native/dialogs';
 //import {Position} from "../../typings/index";
 //import {APP_DOWNLOAD, APK_DOWNLOAD} from "./Constants";
+
 declare var LocationPlugin;
 declare var AMapNavigation;
 declare var cordova: any;
@@ -26,13 +28,14 @@ export class NativeService {
               private toastCtrl: ToastController,
               private alertCtrl: AlertController,
               //private appVersion: AppVersion,
-              private camera: Camera,
+              //private camera: Camera,
               //private toast: Toast,
               //private transfer: Transfer,
               //private file: File,
               //private inAppBrowser: InAppBrowser,
               //private imagePicker: ImagePicker,
-              //private network: Network,
+              private network: Network,
+              private dialogs: Dialogs,
               private loadingCtrl: LoadingController) {
   }
 
@@ -174,45 +177,45 @@ export class NativeService {
    * @param options
    * @returns {Promise<string>}
    */
-  getPicture(options = {}): Promise<string> {
-    let ops: CameraOptions = Object.assign({
-      sourceType: this.camera.PictureSourceType.CAMERA,//图片来源,CAMERA:拍照,PHOTOLIBRARY:相册
-      destinationType: this.camera.DestinationType.DATA_URL,//默认返回base64字符串,DATA_URL:base64   FILE_URI:图片路径
-      quality: 100,//图像质量，范围为0 - 100
-      allowEdit: true,//选择图片前是否允许编辑
-      encodingType: this.camera.EncodingType.JPEG,
-      targetWidth: 1000,//缩放图像的宽度（像素）
-      targetHeight: 1000,//缩放图像的高度（像素）
-      saveToPhotoAlbum: true,//是否保存到相册
-      correctOrientation: true//设置摄像机拍摄的图像是否为正确的方向
-    }, options);
-    return new Promise((resolve) => {
-      this.camera.getPicture(ops).then((imgData: string) => {
-        resolve(imgData);
-      }, (err) => {
-        err == 20 && this.showToast('没有权限,请在设置中开启权限');
-        this.warn('getPicture:' + err)
-      });
-    });
-  };
+  // getPicture(options = {}): Promise<string> {
+  //   let ops: CameraOptions = Object.assign({
+  //     sourceType: this.camera.PictureSourceType.CAMERA,//图片来源,CAMERA:拍照,PHOTOLIBRARY:相册
+  //     destinationType: this.camera.DestinationType.DATA_URL,//默认返回base64字符串,DATA_URL:base64   FILE_URI:图片路径
+  //     quality: 100,//图像质量，范围为0 - 100
+  //     allowEdit: true,//选择图片前是否允许编辑
+  //     encodingType: this.camera.EncodingType.JPEG,
+  //     targetWidth: 1000,//缩放图像的宽度（像素）
+  //     targetHeight: 1000,//缩放图像的高度（像素）
+  //     saveToPhotoAlbum: true,//是否保存到相册
+  //     correctOrientation: true//设置摄像机拍摄的图像是否为正确的方向
+  //   }, options);
+  //   return new Promise((resolve) => {
+  //     this.camera.getPicture(ops).then((imgData: string) => {
+  //       resolve(imgData);
+  //     }, (err) => {
+  //       err == 20 && this.showToast('没有权限,请在设置中开启权限');
+  //       this.warn('getPicture:' + err)
+  //     });
+  //   });
+  // };
 
   /**
    * 通过拍照获取照片
    * @param options
    * @return {Promise<string>}
    */
-  getPictureByCamera(options = {}): Promise<string> {
-    return new Promise((resolve) => {
-      this.getPicture(Object.assign({
-        sourceType: this.camera.PictureSourceType.CAMERA,
-        destinationType: this.camera.DestinationType.DATA_URL//DATA_URL: 0 base64字符串, FILE_URI: 1图片路径
-      }, options)).then((imgData: string) => {
-        resolve(imgData);
-      }).catch(err => {
-        String(err).indexOf('cancel') != -1 ? this.showToast('取消拍照', 1500) : this.showToast('获取照片失败');
-      });
-    });
-  };
+  // getPictureByCamera(options = {}): Promise<string> {
+  //   return new Promise((resolve) => {
+  //     this.getPicture(Object.assign({
+  //       sourceType: this.camera.PictureSourceType.CAMERA,
+  //       destinationType: this.camera.DestinationType.DATA_URL//DATA_URL: 0 base64字符串, FILE_URI: 1图片路径
+  //     }, options)).then((imgData: string) => {
+  //       resolve(imgData);
+  //     }).catch(err => {
+  //       String(err).indexOf('cancel') != -1 ? this.showToast('取消拍照', 1500) : this.showToast('获取照片失败');
+  //     });
+  //   });
+  // };
 
 
   /**
@@ -303,20 +306,36 @@ export class NativeService {
   /**
    * 获取网络类型 如`unknown`, `ethernet`, `wifi`, `2g`, `3g`, `4g`, `cellular`, `none`
    */
-  // getNetworkType(): string {
-  //   if (!this.isMobile()) {
-  //     return 'wifi';
-  //   }
-  //   return this.network.type;
-  // }
+  getNetworkType(): string {
+    if (!this.isMobile()) {
+      return 'wifi';
+    }
+    return this.network.type;
+  }
 
   /**
    * 判断是否有网络
    * @returns {boolean}
    */
-  // isConnecting(): boolean {
-  //   return this.getNetworkType() != 'none';
-  // }
+  isConnecting(): boolean {
+    let networktype = this.getNetworkType();    
+    if (networktype == 'none')
+        return false;
+    if (networktype == 'wifi')
+        return true;
+    else
+    {
+        this.dialogs.confirm('你正使用2g/3g/4g/网络，是否同意上传和下载?','',['同意','不允许'])
+          .then(val =>{
+             if (val = 1)
+                 return true;
+             else
+                 return false;
+          })
+          .catch(e => console.log('Error displaying dialog', e));
+    }
+    return this.getNetworkType() != 'none';
+  }
 
   /**
    * 获得app版本号,如0.01

@@ -261,6 +261,22 @@ module.exports = [
         "clobbers": [
             "cordova.plugins.sqlitePorter"
         ]
+    },
+    {
+        "id": "cordova-plugin-dialogs.notification",
+        "file": "plugins/cordova-plugin-dialogs/www/notification.js",
+        "pluginId": "cordova-plugin-dialogs",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
+        "id": "cordova-plugin-dialogs.notification_android",
+        "file": "plugins/cordova-plugin-dialogs/www/android/notification.js",
+        "pluginId": "cordova-plugin-dialogs",
+        "merges": [
+            "navigator.notification"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -277,7 +293,8 @@ module.exports.metadata =
     "cordova-plugin-whitelist": "1.3.1",
     "cordova-sqlite-storage": "2.0.3",
     "ionic-plugin-keyboard": "2.2.1",
-    "uk.co.workingedge.cordova.plugin.sqliteporter": "0.1.3"
+    "uk.co.workingedge.cordova.plugin.sqliteporter": "0.1.3",
+    "cordova-plugin-dialogs": "1.3.3"
 };
 // BOTTOM OF METADATA
 });

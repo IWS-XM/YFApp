@@ -29,7 +29,8 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter';
 import {SQLite} from '@ionic-native/sqlite';
 import { IonicStorageModule } from '@ionic/storage';
 import {NativeService} from '../providers/nativeservice';
-// import {CSDKImageEditor} from '@ionic-native/phonegap-plugin-csdk-image-editor';
+import { Network } from '@ionic-native/network';
+import { Dialogs } from '@ionic-native/dialogs';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import {NativeService} from '../providers/nativeservice';
     NativeService,
     HttpService,
     initBaseDB,
-    // CSDKImageEditor,
+    Network,
+    Dialogs,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
