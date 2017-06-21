@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { LocalStorage } from '../../providers/local-storage';
 import { NativeService } from "../../providers/nativeservice";
-import { ImgeditorPage } from '../../pages/imageeditor/imgeditor';
+//import { ImgeditorPage } from '../../pages/imageeditor/imgeditor';
 import { ShowimgPage } from '../../pages/imageeditor/showimg';
+import { ImageEditorModal } from '../pages/imageeditor/imageeditormodal';
 
 @Component({
 	selector: 'page-issue',
@@ -38,7 +39,7 @@ export class IssuePage {
 	bigImage: boolean;	
 	buildingname: string;
 	constructor(public localStorage: LocalStorage, private camera: Camera, public navCtrl: NavController, public alertCtrl: AlertController,
-		public params: NavParams, private nativeService: NativeService) {
+		public params: NavParams, private nativeService: NativeService,private modalCtrl: ModalController) {
 		this.sections = ["厨房", "餐厅", "客厅", "阳台", "主卧", "次卧", "公用卫生间", "主卧卫生间"];
 		this.checkitems = ["插座", "灯具(户内)", "多媒体箱", "给排水管(立管与支管)", "红外探测器", "开关", "空调百叶", "空调洞口", "空调机位", "楼板(顶棚、地面)", "门头石"];
 		this.itemdescs = [["布局不合理", "高低不一致", "松动", "损伤", "歪斜", "位置不合理", "污染", "型号安装错误", "遗漏或数量少", "周边墙面凹凸、不平整"]
@@ -108,7 +109,16 @@ export class IssuePage {
 		}
 		
 		this.camera.getPicture(options).then((imageData) => {
-			this.navCtrl.push(ImgeditorPage,{img:this.images,imgdata:imageData});
+			var src = 'data:image/jpeg;base64,' +imageData;
+			const modal = this.modalCtrl.create(ImageEditorModal, {
+                imageSrc: src
+            });
+            modal.onDidDismiss(result => {
+                if(result) {
+                    this.images.push(result);
+                }
+            });
+            modal.present();
 		}, (err) => {
 			// Handle error
 		});

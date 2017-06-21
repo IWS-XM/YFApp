@@ -19,8 +19,9 @@ import { PreinspectionPage } from '../pages/preinspection/preinspection';
 import { MaintenancePage } from '../pages/maintenance/maintenance';
 import { HttpService } from '../providers/HttpService';
 import { initBaseDB } from '../providers/initBaseDB';
-import { ImgeditorPage } from '../pages/imageeditor/imgeditor';
+//import { ImgeditorPage } from '../pages/imageeditor/imgeditor';
 import { ShowimgPage } from '../pages/imageeditor/showimg';
+import { ImageEditorModal } from '../pages/imageeditor/imageeditormodal';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -42,7 +43,7 @@ import { Dialogs } from '@ionic-native/dialogs';
   RoomPage,
 	IssuePage,
   IssueviewPage,
-  ImgeditorPage,
+  ImageEditorModal,
   ShowimgPage,
   FormalinspectionPage,
   OpeninspectionPage,
@@ -66,7 +67,7 @@ import { Dialogs } from '@ionic-native/dialogs';
   RoomPage,
 	IssuePage,
   IssueviewPage,
-  ImgeditorPage,
+  ImageEditorModal,
   ShowimgPage,
   FormalinspectionPage,
   OpeninspectionPage,
