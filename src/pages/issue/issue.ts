@@ -6,7 +6,7 @@ import { LocalStorage } from '../../providers/local-storage';
 import { NativeService } from "../../providers/nativeservice";
 //import { ImgeditorPage } from '../../pages/imageeditor/imgeditor';
 import { ShowimgPage } from '../../pages/imageeditor/showimg';
-import { ImageEditorModal } from '../pages/imageeditor/imageeditormodal';
+import { ImageEditorModal } from '../../pages/imageeditor/imageeditormodal';
 
 @Component({
 	selector: 'page-issue',
