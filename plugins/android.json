@@ -36,6 +36,9 @@
         },
         "uk.co.workingedge.cordova.plugin.sqliteporter": {
             "PACKAGE_NAME": "com.ionicframework.myapp398494"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "com.ionicframework.myapp398494"
         }
     },
     "dependent_plugins": {

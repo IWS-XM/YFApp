@@ -4,6 +4,7 @@ import { AlertController } from 'ionic-angular';
 import { FloorPage } from '../floor/Floor';
 import { LocalStorage } from '../../providers/local-storage';
 import { initBaseDB } from '../../providers/initBaseDB';
+import {NativeService} from '../../providers/nativeservice';
 
 @Component({
   selector: 'page-preinspection',
@@ -11,7 +12,8 @@ import { initBaseDB } from '../../providers/initBaseDB';
 })
 export class PreinspectionPage {
   buildings:Array<any>;
-  constructor(public navCtrl: NavController,public alertCtrl: AlertController,public localStorage: LocalStorage, public initBaseDB: initBaseDB) {
+  constructor(public navCtrl: NavController,public alertCtrl: AlertController,public localStorage: LocalStorage, public initBaseDB: initBaseDB,
+          public nativeservice: NativeService) {
 
     this.localStorage.getItem('buildings').then(
 			val => this.buildings = val
@@ -23,11 +25,12 @@ export class PreinspectionPage {
       this.navCtrl.push(FloorPage, {"buildingid":item});
   }
   
-  resetclick(){
-    this.initBaseDB.initdb("name1.db",true);
+  resetclick(){  
+    if (this.nativeservice.isConnecting()) 
+        this.initBaseDB.initdb("name1.db",true);
     this.localStorage.setItem("initialed",null).then(v=>{
        this.localStorage.init();
-    });
+     });
     
   }
 
