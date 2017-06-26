@@ -1,0 +1,62 @@
+<!--
+  Generated template for the Receipt page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>交付信息</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-list>
+    <ion-item-group>
+      <ion-item-divider color="light"><ion-icon name="albums" item-right></ion-icon>基础信息</ion-item-divider>
+      <ion-item><ion-label>房　　产</ion-label><ion-input type="text" readonly="true" value="{{ receiptInfo.projName + ' ' + receiptInfo.buildingName + ' ' +  receiptInfo.roomName }}"></ion-input></ion-item>
+      <ion-item><ion-label>业主姓名</ion-label><ion-input type="text" readonly="true" value="{{ receiptInfo.ownerName }}"></ion-input></ion-item>
+      <ion-item><ion-label>联系电话</ion-label><ion-input type="text" readonly="true" value="{{ receiptInfo.ownerPhone }}"></ion-input></ion-item>
+    </ion-item-group>
+    <ion-item-group *ngIf = "receiptInfo.issueList!=undefined && receiptInfo.issueList.length>0">
+      <ion-item-divider color="light"><ion-icon name="search" item-right></ion-icon>验房问题</ion-item-divider>
+      <ion-item *ngFor = "let issue of receiptInfo.issueList" >
+        <ion-icon name="close" item-left color="danger" *ngIf="issue.status=='待处理'" ></ion-icon>
+        <ion-icon name="help" item-left color="danger" *ngIf="issue.status=='已受理'"></ion-icon>
+        <ion-icon name="checkmark" item-left color="primary" *ngIf="issue.status=='已处理'"></ion-icon>
+        <h2>{{ issue.catagory }}</h2><p>{{ issue.description }}</p>
+      </ion-item>
+    </ion-item-group>
+    <ion-item-group>
+      <ion-item-divider color="light"><ion-icon name="clipboard" item-right></ion-icon>交付信息</ion-item-divider>
+      <ion-item><ion-label fixed>电表底数</ion-label><span style="width:70px;" item-right>度</span><ion-input type="number" [(ngModel)]="receiptInfo.electricMeter"></ion-input></ion-item>
+      <ion-item><ion-label fixed>水表底数</ion-label><span style="width:70px;" item-right>立方</span><ion-input type="number" [(ngModel)]="receiptInfo.waterMeter"></ion-input></ion-item>
+      <ion-item><ion-label fixed>气表底数</ion-label><span style="width:70px;" item-right>立方</span><ion-input type="number" [(ngModel)]="receiptInfo.gasMeter"></ion-input></ion-item>
+      <ion-item><ion-label fixed>钥匙留用</ion-label><span style="width:70px;" item-right>把　</span><ion-input type="number" [(ngModel)]="receiptInfo.keyReserve"></ion-input></ion-item>
+      <ion-item><ion-label fixed>业主签名</ion-label><ion-input type="text" value=""></ion-input></ion-item>
+      <ion-item><ion-label fixed>交付日期</ion-label><ion-input type="text" value="{{receiptInfo.dlvrDate}}"></ion-input></ion-item>
+      <ion-item  *ngFor="let item of _SCORE_LIST" ><ion-label>{{item.desc}}</ion-label>
+        <ion-icon name="star" item-right color="danger" *ngFor="let s of getStars(5); let i = index;"
+           (click)="starClick(item.name,i+1)" on-touch="starClick(item.name,i+1)"
+           on-tap　="starClick(item.name,i+1)" on-swipe　="starClick(item.name,i+1)"
+            id="{{item.name+(i+1)}}" isActive="{{i<receiptInfo[item.name]?'true':'false'}}" ></ion-icon>
+        
+        <!--<ion-icon name="star" item-right *ngFor="let s of getStars(receiptInfo[item.name]); let i = index;" (click)="starClick(item.name,i+1)" id="{{item.name+(i+1)}}"></ion-icon>
+        <ion-icon name="star" item-right *ngFor="let s of getStars(5-receiptInfo[item.name]); let j = index;" isActive="false"  (click)="starClick(item.name,receiptInfo[item.name]+j+1)" id="{{item.name+(receiptInfo[item.name]+j+1)}}"></ion-icon> -->
+      </ion-item>
+      <ion-item><ion-label>补充说明</ion-label><ion-textarea placeholder="满意度/其他补充说明" max=200 [(ngModel)]="receiptInfo.additionNote"></ion-textarea></ion-item>
+      <ion-item><ion-label>提交后自动上传<span style="font-size:small;color:gray;">(非wifi网络会消耗流量)</span></ion-label><ion-checkbox item-right></ion-checkbox></ion-item>
+    </ion-item-group>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <table width="100%">
+    <tr>
+      <td>
+        <button ion-button color="default" full (click)="doSubmit()">提交</button>
+      </td>
+      <td width="130px">
+        <button ion-button color="danger" full (click)="doCancel()">取消</button>
+      </td>
+    </tr>
+  </table>
+</ion-footer>

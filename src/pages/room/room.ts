@@ -3,6 +3,8 @@ import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { LocalStorage } from '../../providers/local-storage';
 import { IssuePage } from '../issue/issue';
 import { IssueviewPage } from '../issueview/issueview';
+import { RejectPage } from '../reject/reject';
+import { ReceiptPage } from '../receipt/receipt';
 
 @Component({
 	selector: 'page-room',
@@ -25,30 +27,38 @@ export class RoomPage implements OnInit {
 		let val: any;
 		this.localStorage.getItem(this.roomid).then(
 			val => {
-				if(val) {
-				this.buildingid = val.buildingid;
-				this.localStorage.getItem("buildings").then(
-					v1 => {
-						let buildA: Array<any>;
-						buildA = v1;
-						buildA.forEach(v2 => {
-							if (v2.buildingid == this.buildingid)
-								this.buildingname = v2.name;
+				if (val) {
+					this.buildingid = val.buildingid;
+					this.localStorage.getItem("buildings").then(
+						v1 => {
+							let buildA: Array<any>;
+							buildA = v1;
+							buildA.forEach(v2 => {
+								if (v2.buildingid == this.buildingid)
+									this.buildingname = v2.name;
+							})
 						})
-					})
-				this.localStorage.getItem("b" + val.buildingid + "f" + val.floorid).then(
-					v3 => {
-						let rooms: Array<any>;
-						rooms = v3;
-						rooms.forEach(v4 => {
-							if (v4.roomid == this.roomid)
-								this.roomname = v4.name;
-						});
-					}
-				)
-			}
-		})
+					this.localStorage.getItem("b" + val.buildingid + "f" + val.floorid).then(
+						v3 => {
+							let rooms: Array<any>;
+							rooms = v3;
+							rooms.forEach(v4 => {
+								if (v4.roomid == this.roomid)
+									this.roomname = v4.name;
+							});
+						}
+					)
+				}
+			})
 	}
+
+	doReject() {
+		this.navCtrl.push(RejectPage, { "roomid": this.roomid });
+	}
+
+	doReceipt() {
+		this.navCtrl.push(ReceiptPage, { "roomid": this.roomid });
+	};
 
 	drawIssue(issueid: string, issue: any) {
 		this.localStorage.getItem('status' + issue.status).then(
@@ -85,11 +95,11 @@ export class RoomPage implements OnInit {
 				a => {
 					// if (a.left <= cX && a.top <= cY && a.right >= cX && a.bottom >= cY)
 					// 	sec = a.name;
-				    var s = this.inPolygon(cX, cY, a.points);
+					var s = this.inPolygon(cX, cY, a.points);
 					if (s == '1')
-					    sec = a.name;
-			        else 
-					    sec = '';
+						sec = a.name;
+					else
+						sec = '';
 				}
 			)
 		}
@@ -127,7 +137,7 @@ export class RoomPage implements OnInit {
 		var issues = this.roomInfo.issues;
 		issues.forEach(
 			i => {
-				this.localStorage.getItem('issue'+i.issueid).then(
+				this.localStorage.getItem('issue' + i.issueid).then(
 					issue => {
 						//console.log(i);
 						//console.log(issue);
@@ -200,28 +210,28 @@ export class RoomPage implements OnInit {
 		});
 	}
 
-	 /**
-     * @description 射线法判断点是否在多边形内部
-     * @param {number} px 待判断点的X坐标
-     * @param {number} py 待判断点的Y坐标 
-     * @param {Array} poly 多边形顶点，数组成员的格式 [{ x: X坐标, y: Y坐标 },{ x: X坐标, y: Y坐标 }...]
-     * @return {String} 点 p 和多边形 poly 的几何关系
-     */
-    inPolygon(px: number, py: number, poly: [{ x: number, y: number }]) {
-        var flag = false
-        for (var i = 0, l = poly.length, j = l - 1; i < l; j = i, i++) {
-            var sx = poly[i].x,
-                sy = poly[i].y,
-                tx = poly[j].x,
-                ty = poly[j].y
-            if ((sx === px && sy === py) || (tx === px && ty === py)) { return '1' }
-            if ((sy < py && ty >= py) || (sy >= py && ty < py)) {
-                var x = sx + (py - sy) * (tx - sx) / (ty - sy)
-                if (x === px) { return '1' }
-                if (x > px) { flag = !flag }
-            }
-        }
-        return flag ? '1' : '0'
-    }
+	/**
+	* @description 射线法判断点是否在多边形内部
+	* @param {number} px 待判断点的X坐标
+	* @param {number} py 待判断点的Y坐标 
+	* @param {Array} poly 多边形顶点，数组成员的格式 [{ x: X坐标, y: Y坐标 },{ x: X坐标, y: Y坐标 }...]
+	* @return {String} 点 p 和多边形 poly 的几何关系
+	*/
+	inPolygon(px: number, py: number, poly: [{ x: number, y: number }]) {
+		var flag = false
+		for (var i = 0, l = poly.length, j = l - 1; i < l; j = i, i++) {
+			var sx = poly[i].x,
+				sy = poly[i].y,
+				tx = poly[j].x,
+				ty = poly[j].y
+			if ((sx === px && sy === py) || (tx === px && ty === py)) { return '1' }
+			if ((sy < py && ty >= py) || (sy >= py && ty < py)) {
+				var x = sx + (py - sy) * (tx - sx) / (ty - sy)
+				if (x === px) { return '1' }
+				if (x > px) { flag = !flag }
+			}
+		}
+		return flag ? '1' : '0'
+	}
 
 }

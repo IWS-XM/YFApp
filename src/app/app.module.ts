@@ -12,6 +12,8 @@ import { FloorPage } from '../pages/floor/Floor';
 import { RoomPage } from '../pages/room/room';
 import { IssuePage } from '../pages/issue/issue';
 import { IssueviewPage } from '../pages/issueview/issueview';
+import { ReceiptPage } from '../pages/receipt/receipt';
+import { RejectPage } from '../pages/reject/reject';
 import { LocalStorage } from '../providers/local-storage';
 import { FormalinspectionPage } from '../pages/formalinspection/formalinspection';
 import { OpeninspectionPage } from '../pages/openinspection/openinspection';
@@ -26,9 +28,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 import { SQLitePorter } from '@ionic-native/sqlite-porter';
-import {SQLite} from '@ionic-native/sqlite';
+import { SQLite } from '@ionic-native/sqlite';
 import { IonicStorageModule } from '@ionic/storage';
-import {NativeService} from '../providers/nativeservice';
+import { NativeService } from '../providers/nativeservice';
 // import {CSDKImageEditor} from '@ionic-native/phonegap-plugin-csdk-image-editor';
 
 @NgModule({
@@ -37,22 +39,26 @@ import {NativeService} from '../providers/nativeservice';
     AboutPage,
     ContactPage,
     HomePage,
-	FloorPage,
-  RoomPage,
-	IssuePage,
-  IssueviewPage,
-  ImgeditorPage,
-  ShowimgPage,
-  FormalinspectionPage,
-  OpeninspectionPage,
-  PreinspectionPage,
-  MaintenancePage,
+    FloorPage,
+    RoomPage,
+    IssuePage,
+    IssueviewPage,
+    ReceiptPage,
+    RejectPage,
+    ImgeditorPage,
+    ShowimgPage,
+    FormalinspectionPage,
+    OpeninspectionPage,
+    PreinspectionPage,
+    MaintenancePage,
     TabsPage
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      tabsHideOnSubPages: 'true'         //隐藏全部子页面tabs
+    }),
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
@@ -61,29 +67,31 @@ import {NativeService} from '../providers/nativeservice';
     AboutPage,
     ContactPage,
     HomePage,
-	FloorPage,
-  RoomPage,
-	IssuePage,
-  IssueviewPage,
-  ImgeditorPage,
-  ShowimgPage,
-  FormalinspectionPage,
-  OpeninspectionPage,
-  PreinspectionPage,
-  MaintenancePage,
+    FloorPage,
+    RoomPage,
+    IssuePage,
+    IssueviewPage,
+    ReceiptPage,
+    RejectPage,
+    ImgeditorPage,
+    ShowimgPage,
+    FormalinspectionPage,
+    OpeninspectionPage,
+    PreinspectionPage,
+    MaintenancePage,
     TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-  	Camera,
-    LocalStorage,    
+    Camera,
+    LocalStorage,
     SQLite,
     NativeService,
     HttpService,
     initBaseDB,
     // CSDKImageEditor,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
-export class AppModule {}
+export class AppModule { }
