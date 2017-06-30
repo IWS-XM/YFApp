@@ -12,6 +12,7 @@ import { LocalStorage } from '../../providers/local-storage';
   templateUrl: 'reject.html',
 })
 export class RejectPage {
+  
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
