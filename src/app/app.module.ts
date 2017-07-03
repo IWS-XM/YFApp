@@ -25,6 +25,7 @@ import { ImageEditorModal } from '../pages/imageeditor/imageeditormodal';
 import { ReceiptPage } from '../pages/receipt/receipt';
 import { RejectPage } from '../pages/reject/reject';
 import { Signature } from '../pages/signature/signature';
+import { Rejecthistory } from '../pages/rejecthistory/rejecthistory';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -57,6 +58,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
         ReceiptPage,
         RejectPage,
         Signature,
+        Rejecthistory,
         TabsPage
     ],
     imports: [
@@ -87,6 +89,7 @@ import { SignaturePadModule } from 'angular2-signaturepad';
         ReceiptPage,
         RejectPage,
         Signature,
+        Rejecthistory,
         TabsPage
     ],
     providers: [

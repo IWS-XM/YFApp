@@ -17,25 +17,28 @@
   <ion-list>
     <ion-item>
       <ion-label>设计缺陷</ion-label>
-      <ion-checkbox item-right></ion-checkbox>
+      <ion-checkbox item-right [(ngModel)]="rejectInfo.designDefect"></ion-checkbox>
     </ion-item>
     <ion-item>
       <ion-label>工程质量瑕疵</ion-label>
-      <ion-checkbox item-right></ion-checkbox>
+      <ion-checkbox item-right [(ngModel)]="rejectInfo.qualityDefect"></ion-checkbox>
     </ion-item>
     <ion-item>
       <ion-label>与销售承诺不附</ion-label>
-      <ion-checkbox item-right></ion-checkbox>
+      <ion-checkbox item-right [(ngModel)]="rejectInfo.promiseInconformity"></ion-checkbox>
     </ion-item>
     <ion-item>
       <ion-label>其他</ion-label>
-      <ion-checkbox item-right></ion-checkbox>
+      <ion-checkbox item-right [(ngModel)]="rejectInfo.others"></ion-checkbox>
     </ion-item>
     <ion-item>
-      <ion-textarea placeholder="补充说明" max=200 ></ion-textarea>
+      
+        <ion-label>补充说明</ion-label>
+        <ion-textarea placeholder="补充说明" max=200 [(ngModel)]="rejectInfo.additionNote"></ion-textarea>
+      
     </ion-item>
   </ion-list>
-  <button ion-button clear >查看暂不收楼记录</button>
+  <button ion-button clear *ngIf="rejectHistory!=undefined && rejectHistory.length>0" (click)="showRejectHistory()">查看暂不收楼记录</button>
 </ion-content>
 
 <ion-footer>
