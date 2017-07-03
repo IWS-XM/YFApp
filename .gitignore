@@ -48,3 +48,13 @@ Temporary Items
 platforms
 .vs
 
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
+www/build/.ion-diagnostic-typescript.html
+www/build/0.main.js
+www/build/0.main.js.map
+www/build/1.main.js
+www/build/1.main.js.map
+www/build/main.css
+www/build/main.js
+www/build/main.js.map

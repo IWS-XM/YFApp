@@ -24316,3 +24316,25 @@ ion-navbar.toolbar {
 page-floor ion-label {
   white-space: normal;
 }
+
+imageeditormodal .scroll-content {
+  overflow: hidden;
+}
+
+imageeditormodal .canvas-box {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+imageeditormodal .ion-content {
+  background-color: black;
+}
+
+imageeditormodal .ion-footer {
+  background-color: black;
+}
+
+page-signature {
+  background-color: red;
+}
